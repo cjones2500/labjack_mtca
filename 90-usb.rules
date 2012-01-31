@@ -1,0 +1,2 @@
+SUBSYSTEM=="usb", ATTR{manufacturer}=="LabJack", GROUP="users", MODE="0666"
+

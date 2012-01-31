@@ -1,0 +1,7 @@
+
+A C library to control MTCA+ through U3 LabJack
+
+dependecies:
+http://www.libusb.org/wiki/libusb-1.0
+https://github.com/labjack/exodriver
+
