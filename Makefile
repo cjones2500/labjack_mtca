@@ -23,7 +23,7 @@ all: depend $(SHLIB) $(APPS)
 
 .depend depend:
 	@echo Checking dependencies...
-	@$(CC) -M *.c > .depend
+	@$(CC) $(CFLAGS) -M *.c > .depend
 
 $(SHLIB): $(OBJECTS) 
 	$(SOMAKER) $(SOFLAGS) -o $(SHLIB).$(SOSUFFIX) $(OBJECTS) $(LIBS)

@@ -20,18 +20,18 @@ const struct {
 {{8, 11, 10, 19, 6, 17, 5, 12, 2, 9,
 20, 3, 18, 14, 4, 7, 13, 1, 15, 16},
 {11, 10, 12, 13}, 1}, //ESUM_HI
-//for OWLs only crates 3, 13, 16 are connected
-{{20, 20, 20, 17, 20, 18, 20, 20, 20, 20,
+//for OWLs only crates 3, 13, 18 are connected
+//crate 17 is Cherenkov calibration source
+{{20, 20, 20, 18, 20, 19, 20, 20, 20, 20,
 14, 20, 20, 20, 4, 20, 20, 20, 20, 20},
 {17, 16, 18, 19}, 1}, //OWLE_LO
-{{20, 20, 20, 17, 20, 18, 20, 20, 20, 20,
+{{20, 20, 20, 18, 20, 19, 20, 20, 20, 20,
 14, 20, 20, 20, 4, 20, 20, 20, 20, 20},
 {1, 0, 2, 3}, 2}, //OWLE_HI
-{{20, 32, 20, 18, 20, 20, 20, 14, 20, 20,
-20, 20, 20, 17, 20, 20, 20, 20, 20, 4},
+{{20, 18, 20, 19, 20, 20, 20, 14, 20, 20,
+20, 20, 20, 20, 20, 20, 20, 20, 20, 4},
 {5, 4, 6, 7}, 2}, //OWLE_N bit32 is the N16 cable
 };
-
 
 int reset_mtcat(unsigned char mtcat_id) //pull down to reset and enable all, pull up to enable clocking
 {
@@ -93,6 +93,13 @@ int load_crate_mask(unsigned int crate_mask, unsigned char mtcat_id) //crate_mas
 		while (i + 1 != kMTCATcard[mtcat_id].crate[j] && j < 20) j++;
 		cable_mask |= ((crate_mask >> i) & 0x1) << j;
 	}
+
+    //QUICK FIX MTCA OWL ESUM LO
+    //ignore UI, always open all
+    if (mtcat_id == 4) {
+        cable_mask = 0xfffff;
+    }
+
 	cable_mask = ~cable_mask; //0 enables the crate
 
 	//DS_A low, CLK low, DS_B high, 
