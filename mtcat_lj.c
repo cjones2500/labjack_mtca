@@ -124,3 +124,22 @@ out:
 	return (int)error;
 }
 
+//HV E Stop is hooked to LJ 2 EIO0
+//LO -> panic down, HI -> ok to ramp 
+int hv_stop_ok()
+{
+	HANDLE hDevice = 0;
+	long error = 0;
+    long status = 0;
+
+	hDevice = LJUSB_OpenDevice(2, 0, 3);
+	if (hDevice == NULL) return -1;
+
+	if ((error = eDI(hDevice, 1, 8, &status)) != 0) goto out;
+
+out:
+	LJUSB_CloseDevice(hDevice);
+	if (error) return -1;
+    return (int)status;
+}
+
